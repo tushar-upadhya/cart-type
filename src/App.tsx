@@ -1,9 +1,13 @@
 import AppRouting from "./routers/AppRouting";
 
+import { Container } from "react-bootstrap";
+
 function App() {
   return (
     <>
-      <AppRouting />
+      <Container className="mb-4">
+        <AppRouting />
+      </Container>
     </>
   );
 }
