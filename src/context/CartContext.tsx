@@ -17,12 +17,14 @@ type ShoppingCartContext = {
   openCart: () => void;
   closeCart: () => void;
 
-  getItemsQuantity: (id: number) => number;
+  getItemQuantity: (id: number) => number;
+
   increaseCartQuantity: (id: number) => void;
   decreaseCartQuantity: (id: number) => void;
   removeFromCart: (id: number) => void;
 
   cartQuantity: number;
+
   cartItems: CartItem[];
 };
 
@@ -50,16 +52,16 @@ export const ShoppingCartProvider = ({
   const openCart = () => setIsOpen(true);
   const closeCart = () => setIsOpen(false);
 
-  const getItemsQuantity = (id: number) => {
+  const getItemQuantity = (id: number) => {
     return cartItems.find((item) => item.id === id)?.quantity || 0;
   };
 
   const increaseCartQuantity = (id: number) => {
-    setCartItems((currentItems) => {
-      if (currentItems.find((item) => item.id === id) == null) {
-        return [...currentItems, { id, quantity: 1 }];
+    setCartItems((currItems) => {
+      if (currItems.find((item) => item.id === id) == null) {
+        return [...currItems, { id, quantity: 1 }];
       } else {
-        return currentItems.map((item) => {
+        return currItems.map((item) => {
           if (item.id === id) {
             return { ...item, quantity: item.quantity + 1 };
           } else {
@@ -71,12 +73,12 @@ export const ShoppingCartProvider = ({
   };
 
   const decreaseCartQuantity = (id: number) => {
-    setCartItems((currentItem) => {
-      if (currentItem.find((item) => item.id === id)?.quantity === 1) {
-        return currentItem.filter((item) => item.id != id);
+    setCartItems((currItems) => {
+      if (currItems.find((item) => item.id === id)?.quantity === 1) {
+        return currItems.filter((item) => item.id !== id);
       } else {
-        return currentItem.map((item) => {
-          if (item.id == id) {
+        return currItems.map((item) => {
+          if (item.id === id) {
             return { ...item, quantity: item.quantity - 1 };
           } else {
             return item;
@@ -87,15 +89,15 @@ export const ShoppingCartProvider = ({
   };
 
   const removeFromCart = (id: number) => {
-    setCartItems((currentItem) => {
-      return currentItem.filter((item) => item.id == id);
+    setCartItems((currItems) => {
+      return currItems.filter((item) => item.id !== id);
     });
   };
 
   return (
     <ShoppingCartContext.Provider
       value={{
-        getItemsQuantity,
+        getItemQuantity,
         increaseCartQuantity,
         decreaseCartQuantity,
         removeFromCart,
@@ -106,7 +108,6 @@ export const ShoppingCartProvider = ({
       }}
     >
       {children}
-
       <ShoppingCart isOpen={isOpen} />
     </ShoppingCartContext.Provider>
   );

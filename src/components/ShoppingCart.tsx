@@ -6,7 +6,7 @@ import { formatCurrency } from "../utils/formatCurrency";
 
 import CartItem from "./CartItem";
 
-import Items from "../data/item.json";
+import items from "../data/item.json";
 
 type ShoppingCartProps = {
   isOpen: boolean;
@@ -18,7 +18,7 @@ const ShoppingCart = ({ isOpen }: ShoppingCartProps) => {
   return (
     <Offcanvas show={isOpen} onHide={closeCart} placement="end">
       <Offcanvas.Header closeButton>
-        <Offcanvas.Title> Cart</Offcanvas.Title>
+        <Offcanvas.Title>Cart</Offcanvas.Title>
       </Offcanvas.Header>
 
       <Offcanvas.Body>
@@ -31,7 +31,7 @@ const ShoppingCart = ({ isOpen }: ShoppingCartProps) => {
             Total{" "}
             {formatCurrency(
               cartItems.reduce((total, cartItem) => {
-                const item = Items.find((i) => i.id === cartItem.id);
+                const item = items.find((i) => i.id === cartItem.id);
                 return total + (item?.price || 0) * cartItem.quantity;
               }, 0)
             )}
